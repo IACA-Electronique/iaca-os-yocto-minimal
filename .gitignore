@@ -1,0 +1,7 @@
+build/
+out/
+
+# Idea stuff
+
+.idea/
+*.iml
