@@ -1,7 +1,10 @@
 build/
 out/
 
-# Idea stuff
+# Yocto exception
+work/
+!work/conf
 
+# Idea stuff
 .idea/
 *.iml
