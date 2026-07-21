@@ -11,6 +11,45 @@ Minimal Yocto image recipe for IACA-OS.
 
 </section>
 
+## 🗒️ Todo
+
+- [ ] Add IACA layer
+- [x] Minimal Raspberry-based OS
+- [x] Test repository build
+
+## ⚠️ Requirements
+
+- Minimum 140 GB of free disk
+- At least 32 GB of RAM
+- Ubuntu 24.04 (LTS)
+
+> Complete YOCTO requirements informations available on the [official documentation](https://docs.yoctoproject.org/ref-manual/system-requirements.html#system-requirements)
+
+### Dependencies
+
+```bash
+sudo apt-get install build-essential chrpath cpio debianutils diffstat file gawk gcc git iputils-ping libacl1 libcrypt-dev locales python3 python3-git python3-jinja2 python3-pexpect python3-pip python3-subunit socat texinfo unzip wget xz-utils zstd
+```
+
+## 🛠️ Development
+
+### Test that the repository works well
+
+```bash
+cd poky
+source oe-init-build-env
+bitbake core-image-minimal
+```
+
+### Build minimal image for the device
+
+```bash
+cd poky
+source oe-init-build-env
+MACHINE=<machine> bitbake core-image-minimal
+```
+
+> Replace `<machine>` by `raspberrypi4-64` or `raspberrypi5`.
 
 ## 📜 License
 
