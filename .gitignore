@@ -2,7 +2,8 @@ build/
 out/
 
 # Yocto exception
-!poky/build/conf
+work/
+!work/conf
 
 # Idea stuff
 .idea/
