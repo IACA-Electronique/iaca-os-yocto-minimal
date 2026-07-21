@@ -1,7 +1,9 @@
 build/
 out/
 
-# Idea stuff
+# Yocto exception
+!poky/build/conf
 
+# Idea stuff
 .idea/
 *.iml

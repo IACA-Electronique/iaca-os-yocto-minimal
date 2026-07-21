@@ -45,7 +45,7 @@ bitbake core-image-minimal
 
 ```bash
 cd poky
-source oe-init-build-env
+source oe-init-build-env ../work
 MACHINE=<machine> bitbake core-image-minimal
 ```
 
