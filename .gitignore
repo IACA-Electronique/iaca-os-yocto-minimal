@@ -4,6 +4,7 @@ out/
 # Yocto exception
 work/
 !work/conf
+!work/scripts
 
 # Idea stuff
 .idea/
