@@ -1,21 +1,26 @@
 <section style="display: flex; flex-direction: column; align-items: center;">
 
-# IACA OS Yocto minimal
+# IACA OS Yocto minimal securised
 
 ![Docker](https://img.shields.io/badge/docker-257bd6?style=flat&logo=docker&logoColor=white)
 ![Yocto](https://img.shields.io/badge/Yocto-8A2BE2)
 [![Pocky version](https://img.shields.io/badge/Poky-scarthgap-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Minimal Yocto image recipe for IACA-OS.
+Minimal Yocto image recipe for IACA-OS with a securised layer.
 
 </section>
 
-## 🗒️ Todo
+## Purpose
 
-- [ ] Add IACA layer
-- [x] Minimal Raspberry-based OS
-- [x] Test repository build
+This repository provides a minimal Yocto image recipe for IACA-OS, with a securised layer to enhance the security of the system.
+
+### Security features
+
+- [ ] Encrypted filesystem
+- [ ] Secure boot
+- [ ] A/B partitions
+- [ ] Safe and secure OTA Updates
 
 ## ⚠️ Requirements
 
