@@ -4,7 +4,26 @@
 # See : https://gitlab.iaca-electronique.com/linux/iaca-image-format-specifications
 # Supported version : 2.x.x
 
+
 IMAGE_CMD:iaca_a_b() {
+
+  update_root_from_boot_archive(){
+      local archive=$1
+      local root_part_device=$2
+      local tmp_file=archive.tar
+
+      gunzip -c "$archive" > "${tmp_file}" || { echo "ERROR: Unable to uncompress '$archive'."; return 1; }
+
+      tar -xf "$tmp_file" "./cmdline.txt" || { echo "ERROR: Unable to extract cmdline.txt from '$archive'."; return 2; }
+
+      sed -i -E "s#root=[^ ]+#root=${root_part_device}#" cmdline.txt || { echo "ERROR: Unable to update cmdline.txt from '$archive'."; return 3; }
+
+      tar -uf "$tmp_file" "./cmdline.txt" || { echo "ERROR: Unable to update cmdline.txt to '$archive'."; return 4; }
+
+      gzip -c "$tmp_file" > "$archive" || { echo "ERROR: Unable compress '$archive'."; return 5; }
+  }
+
+
   install -d ${WORKDIR}/iaca-assets
 
   IMAGE_DIR_FORMAT_PATH=${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.dir
@@ -15,17 +34,25 @@ IMAGE_CMD:iaca_a_b() {
   WORK_OUTPUT_DIR=${TMPDIR}/${IMAGE_NAME}_a_b.tmp
 
   FINAL_IMAGE_PATH=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}_a_b.iaca
+  FINAL_LINK_IMAGE_PATH=${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}_a_b.iaca
 
   mkdir "$WORK_OUTPUT_DIR"
 
-  cp "$BOOT_TAR_GZ" "${WORK_OUTPUT_DIR}/0" || { echo "ERROR : Unable to copy boot."; exit 1; }
-  cp "$ROOTFS_TAR_GZ" "${WORK_OUTPUT_DIR}/1" || { echo "ERROR : Unable to copy rootfs."; exit 2; }
+  cp "$BOOT_TAR_GZ" "${WORK_OUTPUT_DIR}/0.tar.gz" || { echo "ERROR : Unable to copy boot A."; exit 1; }
+  cp "$BOOT_TAR_GZ" "${WORK_OUTPUT_DIR}/1.tar.gz" || { echo "ERROR : Unable to copy boot B."; exit 1; }
+
+  cp "$ROOTFS_TAR_GZ" "${WORK_OUTPUT_DIR}/2" || { echo "ERROR : Unable to copy rootfs."; exit 2; }
+
+  update_root_from_boot_archive "${WORK_OUTPUT_DIR}/0.tar.gz" "/dev/mmcblk0p3" || { echo "ERROR: Unable to update rootfs in boot A."; exit 3; }
+  update_root_from_boot_archive "${WORK_OUTPUT_DIR}/1.tar.gz" "/dev/mmcblk0p4" || { echo "ERROR: Unable to update rootfs in boot B."; exit 3; }
+
   cp "${DEPLOY_DIR_IMAGE}/16GB_a_b.json" "${WORK_OUTPUT_DIR}/ifd.json" || { echo "ERROR : Unable to create ifd."; exit 3; }
 
   cd "${WORK_OUTPUT_DIR}"
   tar -cvf "${FINAL_IMAGE_PATH}" *  || { echo "ERROR : Unable to create archive."; exit 4; }
 
-  ln -s "${FINAL_IMAGE_PATH}" "${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}_a_b.iaca"
+  [ -f "$FINAL_LINK_IMAGE_PATH" ] && rm "$FINAL_LINK_IMAGE_PATH"
+  ln -s "${FINAL_IMAGE_PATH}" "$FINAL_LINK_IMAGE_PATH"
 
   # Clear
   rm -fr "$WORK_OUTPUT_DIR"
