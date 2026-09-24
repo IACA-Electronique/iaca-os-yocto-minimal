@@ -25,7 +25,7 @@ IMAGE_CMD:dir() {
   fi
 
   if [ -d "${WORK_OUTPUT_DIR}" ] || [ -f "${WORK_OUTPUT_DIR}" ]; then
-    rm fr "$WORK_OUTPUT_DIR"
+    rm -fr "$WORK_OUTPUT_DIR"
   else
     mkdir "$WORK_OUTPUT_DIR"
   fi
@@ -45,11 +45,11 @@ IMAGE_CMD:dir() {
 
   mv "${WORK_OUTPUT_DIR}" "${FINAL_DIR_PATH}"
 
-  if [ -f "$FINAL_LINK" ]; then
+  if [ -e "$FINAL_LINK" ] || [ -L "$FINAL_LINK" ]; then
     rm "$FINAL_LINK"
   fi
 
-  ln -s "$FINAL_DIRNAME" "$FINAL_LINK"
+  ln -s "$FINAL_DIRNAME" "$FINAL_LINK" || { echo "ERROR : Unable to create symlink from '$FINAL_LINK' to '$FINAL_DIRNAME'."; exit 1; }
 }
 
 IMAGE_TYPEDEP:dir = "rpi-sdimg"
