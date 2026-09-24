@@ -11,6 +11,7 @@ inherit deploy
 
 do_deploy() {
     install -d ${DEPLOYDIR}
+    install -d ${DEPLOYDIR}/a_b
 
     install -m 0644 ${WORKDIR}/16GB.json ${DEPLOYDIR}/16GB.json
     install -m 0644 ${WORKDIR}/16GB_a_b.json ${DEPLOYDIR}/16GB_a_b.json
