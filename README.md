@@ -18,7 +18,7 @@ This repository provides a minimal Yocto image recipe for IACA-OS, with a securi
 ### Security features
 
 - [x] A/B partitions
-- [ ] Encrypted filesystem
+- [x] Encrypted filesystem
 - [ ] Safe and secure OTA Updates
 
 #### Why is the secure boot missing?
