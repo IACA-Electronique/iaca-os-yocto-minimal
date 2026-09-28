@@ -1,13 +1,21 @@
 DESCRIPTION = "Custom files for initramfs"
 LICENSE = "CLOSED"
 
-SRC_URI = "file://init"
+SRC_URI = " \
+    file://init \
+    file://init-encryption \
+"
 
 S = "${WORKDIR}"
 
 do_install() {
     install -d ${D}
-    install -m 0755 ${WORKDIR}/init ${D}/init
+
+    if [ "${ENCRYPTION_ENABLED}" = "1" ]; then
+        install -m 0755 ${WORKDIR}/init-encryption ${D}/init
+    else
+        install -m 0755 ${WORKDIR}/init ${D}/init
+    fi
 
     install -d ${D}/dev
     mknod -m 600 ${D}/dev/console c 5 1
