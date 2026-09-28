@@ -17,10 +17,14 @@ This repository provides a minimal Yocto image recipe for IACA-OS, with a securi
 
 ### Security features
 
-- [ ] Encrypted filesystem
-- [ ] Secure boot
 - [x] A/B partitions
+- [x] Encrypted filesystem
 - [ ] Safe and secure OTA Updates
+
+#### Why is the secure boot missing?
+
+Secure boot is a security feature that ensures the integrity and authenticity of the software running on a computer.
+The problem it's that secure boot setup depends on the hardware and the firmware of the device. It's not possible to provide a generic solution for all devices.
 
 ## ⚠️ Requirements
 
