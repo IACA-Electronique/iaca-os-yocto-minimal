@@ -28,9 +28,6 @@ echo "Root device from cmdline: $ROOTDEV"
 
 mkdir -p /newroot
 
-#echo "Waiting for root device..."
-#sleep 2
-
 mount "$ROOTDEV" /newroot
 
 if [ $? -ne 0 ]; then
