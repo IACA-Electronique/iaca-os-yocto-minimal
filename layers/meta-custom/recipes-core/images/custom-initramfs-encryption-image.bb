@@ -11,6 +11,7 @@ PACKAGE_INSTALL = "\
     base-files \
     base-passwd \
     busybox \
+    cryptsetup \
     initramfs-encryption-files \
     ${ROOTFS_BOOTSTRAP_INSTALL} \
 "

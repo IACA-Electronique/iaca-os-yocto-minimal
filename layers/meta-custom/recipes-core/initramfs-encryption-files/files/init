@@ -15,6 +15,9 @@ for arg in $(cat /proc/cmdline); do
         root=*)
             ROOTDEV="${arg#root=}"
             ;;
+        encryptkey=*)
+            ENCRYPTKEY="${arg#encryptkey=}"
+            ;;
     esac
 done
 
@@ -24,11 +27,45 @@ if [ -z "$ROOTDEV" ]; then
     exec /bin/sh
 fi
 
+if [ -z "$ENCRYPTKEY" ]; then
+    echo "No encryptkey= found in /proc/cmdline"
+    echo "Dropping to shell"
+    exec /bin/sh
+fi
+
 echo "Root device from cmdline: $ROOTDEV"
+
+MAPPER_ROOT_DEV_NAME=disk0
+MAPPER_ROOT_DEV=/dev/mapper/${MAPPER_ROOT_DEV_NAME}
+
+printf '%s' "$ENCRYPTKEY" | cryptsetup luksOpen "$ROOTDEV" "$MAPPER_ROOT_DEV_NAME" -d -
+
+CRYPTSETUP_STATUS=$?
+
+if [ "$CRYPTSETUP_STATUS" -ne 0 ]; then
+    echo "cryptsetup luksOpen failed with status $CRYPTSETUP_STATUS"
+    echo "Root device: $ROOTDEV"
+    echo "Mapper name: $MAPPER_ROOT_DEV_NAME"
+    echo "Available block devices:"
+    ls -l /dev/mmcblk* /dev/sd* /dev/nvme* 2>/dev/null || true
+    echo "Device mapper:"
+    ls -l /dev/mapper 2>/dev/null || true
+    echo "Loaded modules:"
+    cat /proc/modules 2>/dev/null || true
+    echo "Dropping to shell"
+    exec /bin/sh
+fi
+
+if [ ! -e "$MAPPER_ROOT_DEV" ]; then
+    echo "cryptsetup succeeded but $MAPPER_ROOT_DEV does not exist"
+    ls -l /dev/mapper 2>/dev/null || true
+    echo "Dropping to shell"
+    exec /bin/sh
+fi
 
 mkdir -p /newroot
 
-mount "$ROOTDEV" /newroot
+mount "$MAPPER_ROOT_DEV" /newroot
 
 if [ $? -ne 0 ]; then
     echo "Failed to mount $ROOTDEV"
