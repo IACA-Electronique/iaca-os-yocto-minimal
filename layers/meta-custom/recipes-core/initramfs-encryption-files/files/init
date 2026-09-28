@@ -6,7 +6,7 @@ mount -t devtmpfs devtmpfs /dev
 
 exec </dev/console >/dev/console 2>&1
 
-echo "Julien's initramfs ! (encryption)"
+echo "Julien's initramfs ! (encryption 2)"
 
 ROOTDEV=""
 
