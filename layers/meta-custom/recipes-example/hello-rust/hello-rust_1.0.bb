@@ -1,14 +1,16 @@
-SUMMARY = "Simple helloworld application"
+SUMMARY = "Simple Rust helloworld application"
 SECTION = "examples"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-SRC_URI = "file://hello.c"
+SRC_URI = "file://hello.rs"
 
 S = "${WORKDIR}"
 
+inherit rust
+
 do_compile() {
-    ${CC} ${CFLAGS} ${LDFLAGS} -o hello hello.c
+    rustc ${RUSTC_ARCHFLAGS} -C linker=${RUST_TARGET_CCLD} -o hello hello.rs
 }
 
 do_install() {
