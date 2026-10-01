@@ -5,6 +5,8 @@
 IMAGE_CMD:dir() {
   WORK_OUTPUT_DIR=${TMPDIR}/${IMAGE_NAME}.dir
 
+  ROOTFS_SRC_TAR_GZ="${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}.tar.gz"
+
   ROOTFS_TAR_GZ=${WORK_OUTPUT_DIR}/rootfs.tar.gz
   BOOT_TAR_GZ=${WORK_OUTPUT_DIR}/boot.tar.gz
 
@@ -31,8 +33,7 @@ IMAGE_CMD:dir() {
   fi
 
   # ROOTFS
-  cd ${IMAGE_ROOTFS}
-  tar -cvzf "${ROOTFS_TAR_GZ}" .
+  cp "${ROOTFS_SRC_TAR_GZ}" "${ROOTFS_TAR_GZ}" || { echo "Unable to copy rootfs '${ROOTFS_SRC_TAR_GZ}' to '${ROOTFS_TAR_GZ}'."; exit 1; }
   cd ${WORKDIR}
 
   # BOOT
@@ -52,4 +53,4 @@ IMAGE_CMD:dir() {
   ln -s "$FINAL_DIRNAME" "$FINAL_LINK" || { echo "ERROR : Unable to create symlink from '$FINAL_LINK' to '$FINAL_DIRNAME'."; exit 1; }
 }
 
-IMAGE_TYPEDEP:dir = "rpi-sdimg"
+IMAGE_TYPEDEP:dir = "tar.gz rpi-sdimg"
