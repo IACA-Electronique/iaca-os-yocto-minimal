@@ -14,7 +14,18 @@ inherit cargo cargo-update-recipe-crates
 require ${BPN}-crates.inc
 
 S = "${WORKDIR}/git"
-B = "${S}"
 
 # Enable Rust binary to be built in release mode
-CARGO_BUILD_FLAGS = "--release -Znext-lockfile-bump"
+CARGO_BUILD_FLAGS:append = " -Znext-lockfile-bump"
+
+do_install () {
+    install -d ${D}${sbindir}
+    install -m 0755 ${B}/target/${CARGO_TARGET_SUBDIR}/iaca-os-watchdog "${D}${sbindir}/${BNP}"
+}
+
+# Prevent objcopy from trying to split debug symbols on Rust binaries
+INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
+INHIBIT_PACKAGE_STRIP = "1"
+
+# Explicitly declare the installed file
+FILES:${PN} = "${sbindir}/iaca-os-watchdog"
