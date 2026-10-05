@@ -53,7 +53,7 @@ sudo apt-get install build-essential chrpath cpio debianutils diffstat file gawk
 ```bash
 cd poky
 source oe-init-build-env
-bitbake core-image-minimal
+bitbake iaca-os-image-minimal
 ```
 
 ### Build minimal image for the device
@@ -61,7 +61,7 @@ bitbake core-image-minimal
 ```bash
 cd poky
 source oe-init-build-env ../work
-MACHINE=<machine> bitbake core-image-minimal
+MACHINE=<machine> bitbake iaca-os-image-minimal.bb
 ```
 
 > Replace `<machine>` by `raspberrypi4-64` or `raspberrypi5`.

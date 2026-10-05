@@ -14,6 +14,7 @@ IMAGE_CMD:iaca() {
   WORK_OUTPUT_DIR=${TMPDIR}/${IMAGE_NAME}.tmp
 
   FINAL_IMAGE_PATH=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.iaca
+  FINAL_LINK_IMAGE_PATH=${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.iaca
 
   mkdir "$WORK_OUTPUT_DIR"
 
@@ -24,7 +25,8 @@ IMAGE_CMD:iaca() {
   cd "${WORK_OUTPUT_DIR}"
   tar -cvf "${FINAL_IMAGE_PATH}" *  || { echo "ERROR : Unable to create archive."; exit 4; }
 
-  ln -s "${FINAL_IMAGE_PATH}" "${DEPLOY_DIR_IMAGE}/${IMAGE_LINK_NAME}.iaca"
+  [ -f "$FINAL_LINK_IMAGE_PATH" ] && rm "$FINAL_LINK_IMAGE_PATH"
+  ln -s "${FINAL_IMAGE_PATH}" "$FINAL_LINK_IMAGE_PATH"
 
   # Clear
   rm -fr "$WORK_OUTPUT_DIR"
