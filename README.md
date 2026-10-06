@@ -61,6 +61,9 @@ cd ~/rust-kernel-tools
 
 > **IMPORTANT**: Minimal version for rustup (rustc) is `1.78.0` and binden is `0.64.0`
 
+> **NOTE**: You could use `RUST_KERNEL_TOOLCHAIN` and `RUST_KERNEL_BINDGEN_DIR` variables in your `local.conf`
+> file to override default rust assets location.
+
 ## 🛠️ Development
 
 ### Test that the repository works well
