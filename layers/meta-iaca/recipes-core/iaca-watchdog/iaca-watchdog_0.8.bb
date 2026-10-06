@@ -10,15 +10,15 @@ SRC_URI = " \
     file://iaca-os-watchdog.sysvinit \
 "
 
-FILES:${PN} = "${sbindir}/iaca-os-watchdog \
-             ${sysconfdir}/init.d/iaca-os-watchdog"
-
 # Inherit cargo classes for Rust build support
-inherit cargo cargo-update-recipe-crates
+inherit cargo cargo-update-recipe-crates update-rc.d
 
 require ${BPN}-crates.inc
 
 S = "${WORKDIR}/git"
+
+INITSCRIPT_NAME = "iaca-os-watchdog"
+INITSCRIPT_PARAMS = "defaults"
 
 # Enable Rust binary to be built in release mode
 CARGO_BUILD_FLAGS:append = " -Znext-lockfile-bump"
@@ -30,9 +30,11 @@ do_install () {
 
     # Install SysVinit service script
     install -d ${D}${sysconfdir}/init.d
-    install -m 0755 ${WORKDIR}/iaca-os-watchdog.sysvinit "${D}${sysconfdir}/init.d/iaca-os-watchdog"
+    install -m 0755 ${WORKDIR}/iaca-os-watchdog.sysvinit "${D}${sysconfdir}/init.d/${INITSCRIPT_NAME}"
 }
 
 # Prevent objcopy from trying to split debug symbols on Rust binaries
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
+
+FILES:${PN} = "${sbindir}/iaca-os-watchdog ${sysconfdir}/init.d/${INITSCRIPT_NAME}"

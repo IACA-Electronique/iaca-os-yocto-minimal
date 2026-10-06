@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # iaca-os-watchdog.sysvinit    Startup script for IACA OS Watchdog Service
 #
