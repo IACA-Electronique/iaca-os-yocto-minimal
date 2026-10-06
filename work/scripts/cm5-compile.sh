@@ -13,7 +13,7 @@ DEPLOY_FILE=${DEPLOY_DIR}/${DEPLOY_FILENAME}
 DEPLOY_GENERIC_FILE=${DEPLOY_DIR}/last.iaca
 
 echo "Clearing SSTATE.."
-if ! bitbake -c cleansstate "$RECIPE_NAME" > /dev/null ; then
+if ! bitbake -c cleansstate "$RECIPE_NAME" ; then
   echo "ERROR: Unable to clear sstate of ${RECIPE_NAME}. See above."
   exit 1
 fi
