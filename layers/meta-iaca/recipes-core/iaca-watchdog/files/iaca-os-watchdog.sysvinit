@@ -1,0 +1,117 @@
+#!/bin/bash
+#
+# iaca-os-watchdog.sysvinit    Startup script for IACA OS Watchdog Service
+#
+# This service manages the IACA hardware watchdog via I2C interface.
+# It periodically sends heartbeat signals to prevent system reset.
+
+### BEGIN INIT INFO
+# Provides:          iaca-os-watchdog.sysvinit
+# Required-Start:    $syslog $network
+# Required-Stop:     $syslog $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: IACA OS Hardware Watchdog Service
+# Description:       Manages hardware watchdog via I2C interface to prevent
+#                    system reset. Sends periodic heartbeat signals.
+### END INIT INFO
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Configuration
+PROG="/usr/sbin/iaca-os-watchdog"
+PIDFILE="/var/run/iaca-os-watchdog.pid"
+NAME="iaca-os-watchdog"
+
+# I2C Configuration (used by program)
+export I2C_BUS_ADDRESS=0x01
+export I2C_SLAVE_ADDRESS=0x3a
+export I2C_CMD_REGISTER_ADDRESS=0x21
+export I2C_RELOAD_CMD_VALUE=0xAA
+
+# Watchdog Configuration (used by program)
+export WATCHDOG_DELAY_SECOND=15
+
+# Ensure PID file directory exists
+[ -d /var/run ] || install -d -m 0755 /var/run
+
+# Check if executable exists
+[ -x "$PROG" ] || exit 0
+
+# Define LSB log functions
+RETVAL=0
+
+start() {
+    echo -n "Starting $NAME: "
+    
+    # Check if already running
+    if [ -f "$PIDFILE" ]; then
+        PID=$(cat "$PIDFILE")
+        if ps -p "$PID" > /dev/null 2>&1; then
+            echo "already running (PID: $PID)"
+            return 0
+        else
+            # Stale PID file, remove it
+            rm -f "$PIDFILE"
+        fi
+    fi
+    
+    # Start the watchdog daemon
+    daemon $PROG
+    
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && touch "$PIDFILE"
+    echo
+    return $RETVAL
+}
+
+stop() {
+    echo -n "Stopping $NAME: "
+    killproc -p "$PIDFILE" $NAME
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && rm -f "$PIDFILE"
+    echo
+    return $RETVAL
+}
+
+restart() {
+    stop
+    sleep 1
+    start
+}
+
+reload() {
+    echo "Reloading $NAME: Not supported"
+    return 0
+}
+
+status() {
+    status -p "$PIDFILE" $NAME
+    RETVAL=$?
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        restart
+        ;;
+    reload)
+        reload
+        ;;
+    status)
+        status
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|reload|status}"
+        exit 1
+        ;;
+esac
+
+exit $RETVAL

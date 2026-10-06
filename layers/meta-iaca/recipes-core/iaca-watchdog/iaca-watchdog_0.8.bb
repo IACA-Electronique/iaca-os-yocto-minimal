@@ -5,8 +5,13 @@ LICENSE = "GPLv3"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-3.0-or-later;md5=1c76c4cc354acaac30ed4d5eefea7245"
 
 # Git repository for the Rust source code
-SRC_URI = "git://gitlab.iaca-electronique.com/iaca-os/system/iaca-os-watchdog.git;protocol=https;branch=master;tag=${PV}"
-#SRCREV = "${AUTOREV}"
+SRC_URI = " \
+    git://gitlab.iaca-electronique.com/iaca-os/system/iaca-os-watchdog.git;protocol=https;branch=master;tag=${PV} \
+    file://iaca-os-watchdog.sysvinit \
+"
+
+FILES:${PN} = "${sbindir}/iaca-os-watchdog \
+             ${sysconfdir}/init.d/iaca-os-watchdog"
 
 # Inherit cargo classes for Rust build support
 inherit cargo cargo-update-recipe-crates
@@ -19,13 +24,15 @@ S = "${WORKDIR}/git"
 CARGO_BUILD_FLAGS:append = " -Znext-lockfile-bump"
 
 do_install () {
+    # Install binary
     install -d ${D}${sbindir}
     install -m 0755 ${B}/target/${CARGO_TARGET_SUBDIR}/iaca-os-watchdog "${D}${sbindir}/${BNP}"
+
+    # Install SysVinit service script
+    install -d ${D}${sysconfdir}/init.d
+    install -m 0755 ${WORKDIR}/iaca-os-watchdog.sysvinit "${D}${sysconfdir}/init.d/iaca-os-watchdog"
 }
 
 # Prevent objcopy from trying to split debug symbols on Rust binaries
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
-
-# Explicitly declare the installed file
-FILES:${PN} = "${sbindir}/iaca-os-watchdog"
