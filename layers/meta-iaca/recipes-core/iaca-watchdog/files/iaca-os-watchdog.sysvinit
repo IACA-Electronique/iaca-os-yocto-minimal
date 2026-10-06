@@ -16,9 +16,6 @@
 #                    system reset. Sends periodic heartbeat signals.
 ### END INIT INFO
 
-# Source function library
-. /etc/rc.d/init.d/functions
-
 # Configuration
 PROG="/usr/sbin/iaca-os-watchdog"
 PIDFILE="/var/run/iaca-os-watchdog.pid"
@@ -43,7 +40,7 @@ export WATCHDOG_DELAY_SECOND=15
 RETVAL=0
 
 start() {
-    echo -n "Starting $NAME: "
+    echo "Starting $NAME.."
     
     # Check if already running
     if [ -f "$PIDFILE" ]; then
@@ -58,21 +55,27 @@ start() {
     fi
     
     # Start the watchdog daemon
-    daemon $PROG
-    
+    nohup "$PROG" > /dev/null 2>&1 &
+    PID=$!
     RETVAL=$?
-    [ $RETVAL -eq 0 ] && touch "$PIDFILE"
-    echo
-    return $RETVAL
+    [ $RETVAL -eq 0 ] && echo "$PID" > "$PIDFILE"
+    echo "$NAME started."
 }
 
 stop() {
-    echo -n "Stopping $NAME: "
-    killproc -p "$PIDFILE" $NAME
-    RETVAL=$?
-    [ $RETVAL -eq 0 ] && rm -f "$PIDFILE"
-    echo
-    return $RETVAL
+    if [ -f "$PIDFILE" ]; then
+        echo "Stopping $NAME.. "
+        pid=$(cat $PIDFILE)
+        if [ -n "$pid" ]; then
+            kill $pid
+            RETVAL=$?
+            [ $RETVAL -eq 0 ] && rm -f "$PIDFILE"
+            echo "$NAME stopped."
+            return $RETVAL
+        else
+            return 0
+        fi
+    fi
 }
 
 restart() {
@@ -87,9 +90,17 @@ reload() {
 }
 
 status() {
-    status -p "$PIDFILE" $NAME
-    RETVAL=$?
-    return $RETVAL
+    local pidfile="$PIDFILE"
+    local name="$NAME"
+    local pid=$(cat $PIDFILE)
+    
+    if [ -n "$pidfile" ] && [ -f "$pidfile" ]; then
+        echo "$name (pid $pid) is running..."
+        return 0
+    else
+        echo "$name is stopped"
+        return 3
+    fi
 }
 
 case "$1" in
