@@ -15,3 +15,5 @@ python () {
         if not d.getVar(var):
             bb.fatal("%s must be set in local.conf (see rust-kernel-toolchain.bbclass)" % var)
 }
+
+inherit rust-check
