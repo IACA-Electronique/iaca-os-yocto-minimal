@@ -32,3 +32,7 @@ The recipe uses:
 - `cargo` class - For Rust/Cargo build support
 - `cargo-update-recipe-crates` class - For automatic crate dependency management
 - Release build mode for optimized binaries
+
+## Init System
+
+The recipe installs a SysVinit service script for automatic startup. The service is enabled by default via the `INIT_MANAGER` configuration (set to `sysvinit` in `iaca-os.conf`).

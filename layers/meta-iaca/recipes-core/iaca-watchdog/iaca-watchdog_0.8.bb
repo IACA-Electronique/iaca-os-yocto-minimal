@@ -17,8 +17,8 @@ require ${BPN}-crates.inc
 
 S = "${WORKDIR}/git"
 
-INITSCRIPT_NAME = "iaca-os-watchdog"
-INITSCRIPT_PARAMS = "defaults"
+INITSCRIPT_NAME = "${@bb.utils.contains('INIT_MANAGER', 'sysvinit', 'iaca-os-watchdog', '', d)}"
+INITSCRIPT_PARAMS = "${@bb.utils.contains('INIT_MANAGER', 'sysvinit', 'defaults', '', d)}"
 
 # Enable Rust binary to be built in release mode
 CARGO_BUILD_FLAGS:append = " -Znext-lockfile-bump"
@@ -28,13 +28,15 @@ do_install () {
     install -d ${D}${sbindir}
     install -m 0755 ${B}/target/${CARGO_TARGET_SUBDIR}/iaca-os-watchdog "${D}${sbindir}/${BNP}"
 
-    # Install SysVinit service script
-    install -d ${D}${sysconfdir}/init.d
-    install -m 0755 ${WORKDIR}/iaca-os-watchdog.sysvinit "${D}${sysconfdir}/init.d/${INITSCRIPT_NAME}"
+    # Install SysVinit service script only if INIT_MANAGER is sysvinit
+    if [ -n "${INITSCRIPT_NAME}" ]; then
+        install -d ${D}${sysconfdir}/init.d
+        install -m 0755 ${WORKDIR}/iaca-os-watchdog.sysvinit "${D}${sysconfdir}/init.d/iaca-os-watchdog"
+    fi
 }
 
 # Prevent objcopy from trying to split debug symbols on Rust binaries
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 
-FILES:${PN} = "${sbindir}/iaca-os-watchdog ${sysconfdir}/init.d/${INITSCRIPT_NAME}"
+FILES:${PN} = "${sbindir}/iaca-os-watchdog ${@bb.utils.contains('INIT_MANAGER', 'sysvinit', '${sysconfdir}/init.d/iaca-os-watchdog', '', d)}"
