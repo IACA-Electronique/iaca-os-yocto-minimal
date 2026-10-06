@@ -5,8 +5,8 @@ LICENSE = "GPLv3"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-3.0-or-later;md5=1c76c4cc354acaac30ed4d5eefea7245"
 
 # Git repository for the Rust source code
-SRC_URI = "git://gitlab.iaca-electronique.com/iaca-os/system/iaca-os-watchdog.git;protocol=https;branch=master"
-SRCREV = "${AUTOREV}"
+SRC_URI = "git://gitlab.iaca-electronique.com/iaca-os/system/iaca-os-watchdog.git;protocol=https;branch=master;tag=${PV}"
+#SRCREV = "${AUTOREV}"
 
 # Inherit cargo classes for Rust build support
 inherit cargo cargo-update-recipe-crates

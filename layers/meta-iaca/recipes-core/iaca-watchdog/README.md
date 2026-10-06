@@ -23,7 +23,7 @@ bitbake iaca-watchdog
 
 ## Files
 
-- `iaca-watchdog.bb` - Main BitBake recipe
+- `iaca-watchdog_0.8.bb` - Main BitBake recipe
 - `iaca-watchdog-crates.inc` - Auto-generated Cargo crate dependencies
 
 ## Configuration
