@@ -46,6 +46,21 @@ The problem it's that secure boot setup depends on the hardware and the firmware
 sudo apt-get install build-essential chrpath cpio debianutils diffstat file gawk gcc git iputils-ping libacl1 libcrypt-dev locales python3 python3-git python3-jinja2 python3-pexpect python3-pip python3-subunit socat texinfo unzip wget xz-utils zstd
 ```
 
+#### Rust assets
+
+```bash
+# Install specific Rust toolchain version                                                                                                                                                                        
+rustup install 1.78.0                                                                                                                                                                                            
+rustup default 1.78.0                                                                                                                                                                                            
+                                                                                                                                                                                                               
+# Setup rust-kernel-tools for bindgen                                                                                                                                                                            
+git clone https://github.com/Rust-for-Linux/rust-kernel-tools.git ~/rust-kernel-tools                                                                                                                            
+cd ~/rust-kernel-tools                                                                                                                                                                                           
+./download-bindgen.sh
+```
+
+> **IMPORTANT**: Minimal version for rustup (rustc) is `1.78.0` and binden is `0.64.0`
+
 ## 🛠️ Development
 
 ### Test that the repository works well
