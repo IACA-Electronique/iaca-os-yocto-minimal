@@ -2,6 +2,10 @@ SUMMARY = "IACA OS Minimal Image"
 DESCRIPTION = "Minimal image for IACA OS with essential packages"
 LICENSE = "MIT"
 
+# Include core-image-minimal as the base
+require recipes-core/images/core-image-minimal.bb
+
+
 EXTRA_IMAGE_FEATURES += " \
     debug-tweaks \
     package-management \
@@ -13,7 +17,7 @@ IMAGE_INSTALL:append = " bash raspi-utils util-linux hello-rust rust-hello-mod c
 IMAGE_INSTALL:append = " iaca-watchdog"
 
 
-IMAGE_CLASSES += "image_types_iaca image_types_dir"
+IMAGE_CLASSES += "sdcard_image-rpi image_types_iaca image_types_dir"
 IMAGE_FSTYPES = "rpi-sdimg tar.gz dir iaca"
 
 # Filesystem configuration
@@ -25,5 +29,3 @@ PACKAGE_CLASSES ?= "package_deb"
 
 COMPATIBLE_MACHINE = "raspberrypi5|raspberrypi4"
 
-INITRAMFS_IMAGE = "overlay-initramfs-image"
-INITRAMFS_IMAGE_NAME = "${INITRAMFS_IMAGE}-${MACHINE}.rootfs"

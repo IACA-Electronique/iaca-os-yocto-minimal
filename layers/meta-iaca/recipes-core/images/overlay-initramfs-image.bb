@@ -12,8 +12,8 @@ PACKAGE_INSTALL = "\
     base-files \
     base-passwd \
     busybox \
-    initramfs-files \
+    initramfs-overlay-files \
     ${ROOTFS_BOOTSTRAP_INSTALL} \
 "
 
-export IMAGE_BASENAME = "overslay-initramfs-image"
+export IMAGE_BASENAME = "overlay-initramfs-image"
