@@ -5,6 +5,7 @@ LICENSE = "MIT"
 # Include core-image-minimal as the base
 require recipes-core/images/core-image-minimal.bb
 
+
 EXTRA_IMAGE_FEATURES += " \
     debug-tweaks \
     package-management \
@@ -16,7 +17,7 @@ IMAGE_INSTALL:append = " bash raspi-utils util-linux hello-rust rust-hello-mod c
 IMAGE_INSTALL:append = " iaca-watchdog"
 
 
-IMAGE_CLASSES += "image_types_iaca image_types_dir"
+IMAGE_CLASSES += "sdcard_image-rpi image_types_iaca image_types_dir"
 IMAGE_FSTYPES = "rpi-sdimg tar.gz dir iaca"
 
 # Filesystem configuration
@@ -27,3 +28,4 @@ IMAGE_ROOTFS_EXTRA_SPACE = "1048576"
 PACKAGE_CLASSES ?= "package_deb"
 
 COMPATIBLE_MACHINE = "raspberrypi5|raspberrypi4"
+
