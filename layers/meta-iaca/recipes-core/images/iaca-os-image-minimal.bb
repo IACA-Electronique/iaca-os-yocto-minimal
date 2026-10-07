@@ -24,3 +24,6 @@ IMAGE_ROOTFS_EXTRA_SPACE = "1048576"
 PACKAGE_CLASSES ?= "package_deb"
 
 COMPATIBLE_MACHINE = "raspberrypi5|raspberrypi4"
+
+INITRAMFS_IMAGE = "overlay-initramfs-image"
+INITRAMFS_IMAGE_NAME = "${INITRAMFS_IMAGE}-${MACHINE}.rootfs"
