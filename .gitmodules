@@ -10,3 +10,7 @@
 	path = layers/meta-openembedded
 	url = https://github.com/openembedded/meta-openembedded.git
 	branch = scarthgap
+[submodule "layers/meta-iaca"]
+	path = layers/meta-iaca
+	url = https://gitlab.iaca-electronique.com/iaca-os/yocto/meta-iaca.git
+	branch = scarthgap
