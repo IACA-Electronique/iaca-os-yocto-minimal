@@ -11,28 +11,31 @@ Minimal Yocto image recipe for IACA-OS.
 
 </section>
 
+* **Maintainer**: Julien FAURE <julien.faure@iaca-electronique.com>
+
 ## Purpose
 
 This repository provides a minimal Yocto image recipe for IACA-OS.
 
-### Features
-
-* A/B partitions
-* Encrypted filesystem
-* Fastboot
 
 ### Documentations
 
 * [A/B partition](docs/a_b%20partition/README.md)
 * [Encrypted filesystem](docs/encryption/README.md)
 * [Custom layer documentation](layers/meta-custom/README.md)
+* [SysVInit](docs/sysvinit/README.md)
 
-#### Why is the secure boot missing?
+## ✅ Supported devices
 
-Secure boot is a security feature that ensures the integrity and authenticity of the software running on a computer.
-The problem it's that secure boot setup depends on the hardware and the firmware of the device. It's not possible to provide a generic solution for all devices.
+| Device name         | Status               | `MACHINE`      |
+|---------------------|----------------------|----------------|
+| IACA-BOX revB - CM5 | ✅ Supported, Tested | `raspberrypi5` |
+| IACA-BOX revB - CM4 | ✅ Supported         | `raspberrypi4` |
 
-## ⚠️ Requirements
+
+## 📦️ Build
+
+### ⚠️ Requirements
 
 - Minimum 140 GB of free disk
 - At least 32 GB of RAM
@@ -40,13 +43,13 @@ The problem it's that secure boot setup depends on the hardware and the firmware
 
 > Complete YOCTO requirements informations available on the [official documentation](https://docs.yoctoproject.org/ref-manual/system-requirements.html#system-requirements)
 
-### Dependencies
+#### Dependencies
 
 ```bash
 sudo apt-get install build-essential chrpath cpio debianutils diffstat file gawk gcc git iputils-ping libacl1 libcrypt-dev locales python3 python3-git python3-jinja2 python3-pexpect python3-pip python3-subunit socat texinfo unzip wget xz-utils zstd
 ```
 
-#### Rust assets
+##### Rust assets
 
 ```bash
 # Install specific Rust toolchain version                                                                                                                                                                        
@@ -83,6 +86,8 @@ MACHINE=<machine> bitbake iaca-os-image-minimal.bb
 ```
 
 > Replace `<machine>` by `raspberrypi4-64` or `raspberrypi5`.
+
+___
 
 ## 📜 License
 
