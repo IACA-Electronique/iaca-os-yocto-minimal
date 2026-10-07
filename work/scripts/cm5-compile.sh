@@ -2,21 +2,23 @@
 
 export MACHINE=raspberrypi5
 
-RECIPE_NAME=core-image-minimal
+RECIPE_NAME=iaca-os-image-minimal
 
-OUTPUT_FILE=./tmp/deploy/images/raspberrypi5/core-image-minimal-raspberrypi5.rootfs.rpi-sdimg
+OUTPUT_FILE=./tmp/deploy/images/raspberrypi5/${RECIPE_NAME}-${MACHINE}.rootfs.iaca
 DEPLOY_DIR=/tmp/deploy
 
 DATE_SUFFIX=$(date +%Y%m%d-%H%M%S)
-DEPLOY_FILENAME=${MACHINE}_${DATE_SUFFIX}.img
+DEPLOY_FILENAME=${MACHINE}_${DATE_SUFFIX}.iaca
 DEPLOY_FILE=${DEPLOY_DIR}/${DEPLOY_FILENAME}
-DEPLOY_GENERIC_FILE=${DEPLOY_DIR}/last.img
+DEPLOY_GENERIC_FILE=${DEPLOY_DIR}/last.iaca
 
-
-if ! bitbake -c cleansstate "$RECIPE_NAME"; then
+echo "Clearing SSTATE.."
+if ! bitbake -c cleansstate "$RECIPE_NAME" ; then
   echo "ERROR: Unable to clear sstate of ${RECIPE_NAME}. See above."
   exit 1
 fi
+
+mkdir -p "${DEPLOY_DIR}"
 
 if bitbake "$RECIPE_NAME"; then
   cp "${OUTPUT_FILE}" "${DEPLOY_FILE}"

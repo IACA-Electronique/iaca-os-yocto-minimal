@@ -1,25 +1,31 @@
 <section style="display: flex; flex-direction: column; align-items: center;">
 
-# IACA OS Yocto minimal securised
+# IACA OS Yocto minimal
 
 ![Docker](https://img.shields.io/badge/docker-257bd6?style=flat&logo=docker&logoColor=white)
 ![Yocto](https://img.shields.io/badge/Yocto-8A2BE2)
 [![Pocky version](https://img.shields.io/badge/Poky-scarthgap-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Minimal Yocto image recipe for IACA-OS with a securised layer.
+Minimal Yocto image recipe for IACA-OS.
 
 </section>
 
 ## Purpose
 
-This repository provides a minimal Yocto image recipe for IACA-OS, with a securised layer to enhance the security of the system.
+This repository provides a minimal Yocto image recipe for IACA-OS.
 
-### Security features
+### Features
 
-- [x] A/B partitions
-- [x] Encrypted filesystem
-- [ ] Safe and secure OTA Updates
+* A/B partitions
+* Encrypted filesystem
+* Fastboot
+
+### Documentations
+
+* [A/B partition](docs/a_b%20partition/README.md)
+* [Encrypted filesystem](docs/encryption/README.md)
+* [Custom layer documentation](layers/meta-custom/README.md)
 
 #### Why is the secure boot missing?
 
@@ -40,6 +46,24 @@ The problem it's that secure boot setup depends on the hardware and the firmware
 sudo apt-get install build-essential chrpath cpio debianutils diffstat file gawk gcc git iputils-ping libacl1 libcrypt-dev locales python3 python3-git python3-jinja2 python3-pexpect python3-pip python3-subunit socat texinfo unzip wget xz-utils zstd
 ```
 
+#### Rust assets
+
+```bash
+# Install specific Rust toolchain version                                                                                                                                                                        
+rustup install 1.78.0                                                                                                                                                                                            
+rustup default 1.78.0                                                                                                                                                                                            
+                                                                                                                                                                                                               
+# Setup rust-kernel-tools for bindgen                                                                                                                                                                            
+git clone https://github.com/Rust-for-Linux/rust-kernel-tools.git ~/rust-kernel-tools                                                                                                                            
+cd ~/rust-kernel-tools                                                                                                                                                                                           
+./download-bindgen.sh
+```
+
+> **IMPORTANT**: Minimal version for rustup (rustc) is `1.78.0` and binden is `0.64.0`
+
+> **NOTE**: You could use `RUST_KERNEL_TOOLCHAIN` and `RUST_KERNEL_BINDGEN_DIR` variables in your `local.conf`
+> file to override default rust assets location.
+
 ## 🛠️ Development
 
 ### Test that the repository works well
@@ -47,7 +71,7 @@ sudo apt-get install build-essential chrpath cpio debianutils diffstat file gawk
 ```bash
 cd poky
 source oe-init-build-env
-bitbake core-image-minimal
+bitbake iaca-os-image-minimal
 ```
 
 ### Build minimal image for the device
@@ -55,7 +79,7 @@ bitbake core-image-minimal
 ```bash
 cd poky
 source oe-init-build-env ../work
-MACHINE=<machine> bitbake core-image-minimal
+MACHINE=<machine> bitbake iaca-os-image-minimal.bb
 ```
 
 > Replace `<machine>` by `raspberrypi4-64` or `raspberrypi5`.
