@@ -6,6 +6,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-3.0-or-later;md5=1c76c4cc35
 
 SRC_URI = " \
     git://gitlab.iaca-electronique.com/iaca-os/system/iaca-os-infos.git;protocol=https;branch=master;tag=${PV} \
+    file://modify-fs-daemon.patch \
 "
 
 S = "${WORKDIR}/git/src"
