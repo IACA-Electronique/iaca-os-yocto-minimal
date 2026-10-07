@@ -14,7 +14,7 @@ EXTRA_IMAGE_FEATURES += " \
 # Package installation
 IMAGE_INSTALL:append = " kernel-modules"
 IMAGE_INSTALL:append = " bash raspi-utils util-linux hello-rust rust-hello-mod colors i2c-tools"
-IMAGE_INSTALL:append = " iaca-watchdog"
+IMAGE_INSTALL:append = " iaca-watchdog iaca-os-exec"
 
 
 IMAGE_CLASSES += "sdcard_image-rpi image_types_iaca image_types_dir"
