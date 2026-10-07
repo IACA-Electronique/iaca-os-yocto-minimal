@@ -42,6 +42,8 @@ mount --move /proc /newroot/proc
 mount --move /sys /newroot/sys
 mount --move /dev /newroot/dev
 
+./iaca-splash.sh
+
 echo "Switching to real rootfs"
 
 exec switch_root /newroot /sbin/init
