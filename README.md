@@ -82,7 +82,7 @@ bitbake iaca-os-image-minimal
 ```bash
 cd poky
 source oe-init-build-env ../work
-MACHINE=<machine> bitbake iaca-os-image-minimal.bb
+MACHINE=<machine> bitbake iaca-os-image-minimal
 ```
 
 > Replace `<machine>` by `raspberrypi4-64` or `raspberrypi5`.
