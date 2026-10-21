@@ -4,6 +4,7 @@ Rules:
 1. Never commit or add file (never git write action)
 2. Never use `bitbake` command
 3. If the prompt starts with "chat:", don't edit anything. Show the response in the console.
+4. If the prompt starts with "command:", don't edit anything. Show only the resulting command.
 
 ## Context
 This is a **Yocto Project** build using **Scarthgap (poky)**. Target **MACHINE=raspberrypi5**.
