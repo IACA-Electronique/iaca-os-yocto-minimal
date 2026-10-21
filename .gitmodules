@@ -17,3 +17,4 @@
 [submodule "layers/meta-sunxi"]
 	path = layers/meta-sunxi
 	url = https://github.com/linux-sunxi/meta-sunxi.git
+    branch = scarthgap
