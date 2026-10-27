@@ -27,10 +27,11 @@ This repository provides a minimal Yocto image recipe for IACA-OS.
 
 ## ✅ Supported devices
 
-| Device name         | Status               | `MACHINE`      |
-|---------------------|----------------------|----------------|
-| IACA-BOX revB - CM5 | ✅ Supported, Tested | `raspberrypi5` |
-| IACA-BOX revB - CM4 | ✅ Supported         | `raspberrypi4` |
+| Device name                                                                                | Status               | `MACHINE`           |
+|--------------------------------------------------------------------------------------------|----------------------|---------------------|
+| IACA-BOX revB - CM5                                                                        | ✅ Supported, Tested | `raspberrypi5`      |
+| IACA-BOX revB - CM4                                                                        | ✅ Supported         | `raspberrypi4`      |
+| [Banana Pi BPI-M2 Ultra](https://docs.banana-pi.org/en/BPI-M2_Ultra/BananaPi_BPI-M2_Ultra) | ✅ Supported, Tested | `bananapi-m2-ultra` |
 
 
 ## 📦️ Build
