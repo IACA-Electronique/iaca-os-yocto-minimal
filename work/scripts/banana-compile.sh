@@ -4,13 +4,13 @@ export MACHINE=bananapi-m2-ultra
 
 RECIPE_NAME=iaca-os-image-minimal
 
-OUTPUT_FILE=./tmp/deploy/images/${MACHINE}/${RECIPE_NAME}-${MACHINE}.rootfs.wic.gz
+OUTPUT_FILE=./tmp/deploy/images/${MACHINE}/${RECIPE_NAME}-${MACHINE}.rootfs.iaca
 DEPLOY_DIR=/tmp/deploy
 
 DATE_SUFFIX=$(date +%Y%m%d-%H%M%S)
-DEPLOY_FILENAME=${MACHINE}_${DATE_SUFFIX}.wic.gz
+DEPLOY_FILENAME=${MACHINE}_${DATE_SUFFIX}.iaca
 DEPLOY_FILE=${DEPLOY_DIR}/${DEPLOY_FILENAME}
-DEPLOY_GENERIC_FILE=${DEPLOY_DIR}/last.wic.gz
+DEPLOY_GENERIC_FILE=${DEPLOY_DIR}/last.iaca
 
 echo "Clearing SSTATE.."
 if ! bitbake -c cleansstate "$RECIPE_NAME" ; then
